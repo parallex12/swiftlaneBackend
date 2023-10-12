@@ -1,0 +1,21 @@
+{
+  "name": "swiftlane-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon app.js || node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zeeshan Karim <zeeshankarim9247@gmail.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "express": "^4.18.2",
+    "firebase": "^10.3.1",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.0.1"
+  }
+}
