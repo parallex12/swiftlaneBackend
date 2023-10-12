@@ -8,7 +8,7 @@ export const getDocById = async (req, res) => {
   try {
     let path = req.originalUrl?.replace("/", "").split("/");
     let id = req.params?.id;
-    const queryData = await Query?.query_Get_by_id(path[0], id);
+    const queryData = await Query?.query_Get_by_id(path[1], id);
     if (queryData.exists()) {
       res.send(queryData?.data());
     } else {
@@ -36,7 +36,7 @@ export const updateDocById = async (req, res) => {
       res.sendStatus(400);
       return;
     }
-    const queryData = await Query?.query_update_by_id(path[0], id, data);
+    const queryData = await Query?.query_update_by_id(path[1], id, data);
     res.send({ msg: "User updated.", code: 200 });
     res.end();
   } catch (e) {

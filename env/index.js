@@ -1,3 +1,5 @@
+export const githubToken = "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";
+
 export const firebaseConfig = {
   apiKey: "AIzaSyBbWbTYwRpnfzT0Y7BU9TXVOtmY6eEAmJA",
   authDomain: "swiftlane-60bd1.firebaseapp.com",
