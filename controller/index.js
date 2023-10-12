@@ -4,17 +4,6 @@ import { PrivateKey, SortTableData } from "../services/index.js";
 import { Pkey } from "../env/index.js";
 import jsonwebtoken from "jsonwebtoken";
 
-export const getAllDocs = async (req, res, table) => {
-  try {
-    let path = req.originalUrl?.replace("/", "");
-    const queryData = SortTableData(await Query?.query_Get_all(path));
-    res.send(queryData);
-    res.end();
-  } catch (e) {
-    console.log(e.message);
-  }
-};
-
 export const getDocById = async (req, res) => {
   try {
     let path = req.originalUrl?.replace("/", "").split("/");
@@ -28,6 +17,32 @@ export const getDocById = async (req, res) => {
     res.end();
   } catch (e) {
     console.log(e.message);
+    res.sendStatus(500);
+    res.end();
+  }
+};
+
+export const updateDocById = async (req, res) => {
+  try {
+    let path = req.originalUrl?.replace("/", "").split("/");
+    let id = req.params?.id;
+    let data = req.body;
+    if (
+      Object.keys(data).length === 0 ||
+      data?.email ||
+      data?.provider ||
+      data?.password
+    ) {
+      res.sendStatus(400);
+      return;
+    }
+    const queryData = await Query?.query_update_by_id(path[0], id, data);
+    res.send({ msg: "User updated.", code: 200 });
+    res.end();
+  } catch (e) {
+    console.log(e.message);
+    res.sendStatus(500);
+    res.end();
   }
 };
 
@@ -39,5 +54,7 @@ export const getSignedToken = async (req, res) => {
     res.end();
   } catch (e) {
     console.log(e.message);
+    res.sendStatus(500);
+    res.end();
   }
 };
