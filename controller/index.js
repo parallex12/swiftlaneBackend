@@ -16,7 +16,7 @@ export const getDocById = async (req, res) => {
     }
     res.end();
   } catch (e) {
-    console.log(e.message);
+    console.log("Firebase",e.message);
     res.sendStatus(500);
     res.end();
   }
