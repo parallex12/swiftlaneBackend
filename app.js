@@ -18,11 +18,18 @@ app.use(express.static("public"));
 
 //Load all routes
 loadRoutes(v1Routes, (path, route) => app.use("/api" + path, route));
+app.use("/test", async (req, res) => {
+  res.send("heyyyy" + PORT);
+});
+
 
 //Wrong Route
 app.use("/", async (req, res) => {
-  res.send("<h1>Error 404 Not Found !</h1>" + PORT);
+  res.send("<h1>Error 404 NoAssasast Found !</h1>" + PORT);
 });
+
+
+
 
 app.listen(PORT, () => {
   console.log(process.env.PORT);

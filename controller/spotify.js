@@ -1,11 +1,11 @@
 import SpotifyWebApi from "spotify-web-api-node";
+import { redirect_uri_pro } from "../env/index.js";
 
 var spotifyApi = new SpotifyWebApi({
   clientId: "ff53ed3aa96b4ea99ba922d1883aea19",
   clientSecret: "df79bec38e2c4742bd662c226b67aea9",
-  redirectUri: "exp://192.168.100.81:19000",
+  redirectUri: "com.adlerwareco.swiftlane://",
 });
-
 // spotifyApi.setAccessToken('<your_access_token>');
 
 export const getToken = async (req, res) => {
@@ -13,6 +13,7 @@ export const getToken = async (req, res) => {
     // var state = generateRandomString(16);
     var scopes = ["user-read-private", "user-read-email"];
     res.send(spotifyApi.createAuthorizeURL(scopes));
+    res.end()
   } catch (e) {
     console.log(e.message);
     res.sendStatus(500);

@@ -10,6 +10,9 @@ export const firebaseConfig = {
   measurementId: "G-QB13WD8Q3E",
 };
 
+export const redirect_uri_pro="exp://u.expo.dev/update/f2b40542-8870-4c52-8369-b4e89740b91d/"
+export const redirect_uri_dev="exp://192.168.100.81:19000"
+
 export const Pkey = `MIIEpAIBAAKCAQEAyAWjN70xDp9I4pv5Hv2+Re+Oz1K4Ud2DlmWxUHnHPWZ6Th92
 c24Z/HFxnbhCCv2y9T1UP+/ILtaYTyvKfxsVr9OC2QnRdJ05DArmJekmAAJqYteY
 gTbIXlrL3URNvTcwe1kf6Ge/OxIY/ucHsIlwfqn39pnm0iCPXNjnr4EroqksILxR
