@@ -12,8 +12,10 @@ export const getToken = async (req, res) => {
   try {
     // var state = generateRandomString(16);
     var scopes = ["user-read-private", "user-read-email"];
-    res.send(spotifyApi.createAuthorizeURL(scopes));
-    res.end()
+    let url = spotifyApi.createAuthorizeURL(scopes);
+    console.log(url);
+    res.send(url);
+    res.end();
   } catch (e) {
     console.log(e.message);
     res.sendStatus(500);
@@ -41,6 +43,7 @@ export const refreshToken = async (req, res) => {
 export const callBackToken = async (req, res) => {
   try {
     const code = req.query.code;
+    console.log(code);
     spotifyApi
       .authorizationCodeGrant(code)
       .then((data) => {

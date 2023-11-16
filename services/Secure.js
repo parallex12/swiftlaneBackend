@@ -1,18 +1,21 @@
 import jsonwebtoken from "jsonwebtoken";
 import { Pkey } from "../env/index.js";
+import { jwtDecode } from "jwt-decode";
 
-export const ensureToken = (req, res, next) => {
+export const ensureToken = async (req, res, next) => {
   const bearerHeader = req.headers["authorization"];
   if (typeof bearerHeader !== "undefined") {
     const bearer = bearerHeader.split(" ");
     const bearerToken = bearer[1];
-    let t = jsonwebtoken.verify(bearerToken, Pkey);
-    if (req.params.id == t?.id) {
-      req.token = bearerToken;
-      next();
-    } else {
+    const decoded = jwtDecode(bearerToken);
+    var dateNow = new Date();
+
+    if (decoded?.exp < dateNow.getTime() / 1000 || !decoded?.user_id) {
       res.sendStatus(403);
+      return;
     }
+    req.token = bearerToken;
+    next();
   } else {
     res.sendStatus(403);
   }

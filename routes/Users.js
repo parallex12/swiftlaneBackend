@@ -5,9 +5,9 @@ import { ensureToken } from "../services/Secure.js";
 const router = express.Router();
 
 //get user by id
-router.get("/:id", ensureToken, getDocById);
+router.get("/", ensureToken, getDocById);
 
 //update user by id
-router.post("/:id", ensureToken, updateDocById);
+router.put("/", ensureToken, updateDocById);
 
 export default router;

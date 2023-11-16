@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import jsonwebtoken from "jsonwebtoken";
+import { jwtDecode } from "jwt-decode";
 
 export const loadRoutes = (routes, callBack) => {
   try {
@@ -48,4 +49,13 @@ export const generateRandomString = (length) => {
   }
 
   return result;
+};
+
+export const _tokenDetails = (token) => {
+  try {
+    const decoded = jwtDecode(token);
+    return decoded;
+  } catch (e) {
+    console.log(e.message);
+  }
 };
