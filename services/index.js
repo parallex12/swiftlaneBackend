@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import jsonwebtoken from "jsonwebtoken";
+import { jwtDecode } from "jwt-decode";
 
 export const loadRoutes = (routes, callBack) => {
   try {
@@ -34,4 +35,27 @@ export const PrivateKey = (data) => {
   });
 
   return privateKey;
+};
+
+// declare all characters
+const characters =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+export const generateRandomString = (length) => {
+  let result = " ";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  return result;
+};
+
+export const _tokenDetails = (token) => {
+  try {
+    const decoded = jwtDecode(token);
+    return decoded;
+  } catch (e) {
+    console.log(e.message);
+  }
 };

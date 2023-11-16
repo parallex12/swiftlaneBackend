@@ -1,13 +1,13 @@
 import firebase from "../services/Firebase.js";
 import { Query } from "../models/index.js";
-import { PrivateKey, SortTableData } from "../services/index.js";
+import { PrivateKey, SortTableData, _tokenDetails } from "../services/index.js";
 import { Pkey } from "../env/index.js";
 import jsonwebtoken from "jsonwebtoken";
 
 export const getDocById = async (req, res) => {
   try {
     let path = req.originalUrl?.replace("/", "").split("/");
-    let id = req.params?.id;
+    let id = _tokenDetails(req.token)?.user_id;
     const queryData = await Query?.query_Get_by_id(path[1], id);
     if (queryData.exists()) {
       res.send(queryData?.data());
@@ -16,7 +16,7 @@ export const getDocById = async (req, res) => {
     }
     res.end();
   } catch (e) {
-    console.log(e.message);
+    console.log("Firebase",e.message);
     res.sendStatus(500);
     res.end();
   }
@@ -25,7 +25,7 @@ export const getDocById = async (req, res) => {
 export const updateDocById = async (req, res) => {
   try {
     let path = req.originalUrl?.replace("/", "").split("/");
-    let id = req.params?.id;
+    let id = _tokenDetails(req.token)?.user_id;
     let data = req.body;
     if (
       Object.keys(data).length === 0 ||

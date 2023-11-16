@@ -9,7 +9,8 @@ dist/
 
 # Compiled Java class files
 *.class
-
+package-lock.json
+yarn.lock
 # Compiled Python bytecode
 *.py[cod]
 

@@ -6,8 +6,7 @@ import { Pkey } from "./env/index.js";
 import { setHeaders } from "./middlewares.js";
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
+const PORT = process.env.PORT || 4000;
 // load firebase database
 const db = firebase?.db;
 // for parsing application/json
@@ -22,7 +21,10 @@ loadRoutes(v1Routes, (path, route) => app.use("/api" + path, route));
 
 //Wrong Route
 app.use("/", async (req, res) => {
-  res.send("<h1>Error 404 Not Found !</h1>");
+  res.send("<h1>Error 404 Invalid Found !</h1>" + PORT);
 });
 
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(process.env.PORT);
+  console.log(`Server is running on port ${PORT}`);
+});
