@@ -8,6 +8,6 @@ var app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-let firebase={ app, db, storage }
+let firebase = { app, db, storage };
 
 export default firebase;
