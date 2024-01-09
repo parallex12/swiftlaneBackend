@@ -16,7 +16,9 @@ export const addChannel = async (req, res) => {
   try {
     google.youtube("v3").channels.list(
       {
-        part: ["snippet,contentDetails,statistics"],
+        part: [
+          "snippet,contentDetails,statistics,topicDetails,status,id,brandingSettings",
+        ],
         forUsername: path,
         key: API_KEY,
       },
@@ -27,17 +29,130 @@ export const addChannel = async (req, res) => {
         }
         var channels = response?.data?.items;
         if (channels?.length == 0 || channels === undefined) {
-          console.log("No channel found.");
           res.send({ msg: "No Channel Found", data: null });
         } else {
-          console.log(channels[0]?.snippet?.title);
           res.send({
             msg: "success",
             data: {
               id: channels[0]?.id,
               title: channels[0]?.snippet?.title,
               totalViews: channels[0]?.statistics?.viewCount,
+              subscribers: channels[0]?.statistics?.subscriberCount,
             },
+          });
+        }
+      }
+    );
+  } catch (e) {
+    console.log(e.message);
+    res.sendStatus(500);
+    res.end();
+  }
+};
+
+export const getTopVideosOfChannel = async (req, res) => {
+  let channelId = req?.params?.id;
+  try {
+    google.youtube("v3").search.list(
+      {
+        part: "id",
+        key: API_KEY,
+        channelId: channelId,
+        maxResults: 5,
+        order: "viewCount",
+      },
+      function (err, response) {
+        if (err) {
+          res.status(500).send({ error: err });
+          return;
+        }
+        var videos = response?.data?.items;
+        if (videos?.length == 0 || videos === undefined) {
+          res.send({ msg: "No Video Found", data: null });
+        } else {
+          let arr = [];
+          videos.map((item) => {
+            try {
+              google.youtube("v3").videos.list(
+                {
+                  part: "snippet,id,statistics",
+                  key: API_KEY,
+                  id: item?.id?.videoId,
+                },
+                function (err, response) {
+                  if (err) {
+                    res.status(500).send({ error: err });
+                    return;
+                  }
+                  var video = response?.data?.items;
+
+                  if (video?.length == 0 || video === undefined) {
+                    res.send({ msg: "No Video Found", data: null });
+                  } else {
+                    arr.push(video[0]);
+                    if (videos.length === arr.length) {
+                      res.send({ msg: "success", data: arr });
+                      return;
+                    }
+                    // res.send(videos);
+                    // res.send({
+                    //   msg: "success",
+                    //   // data: {
+                    //   //   id: videos[0]?.id,
+                    //   //   title: videos[0]?.snippet?.title,
+                    //   //   totalViews: videos[0]?.statistics?.viewCount,
+                    //   // },
+                    //   data: videos,
+                    // });
+                  }
+                }
+              );
+            } catch (e) {
+              res.sendStatus(500);
+              res.end();
+            }
+          });
+          // console.log(videosDetails);
+          // res.send({
+          //   msg: "success",
+          //   data: videosDetails?.length,
+          // });
+        }
+      }
+    );
+  } catch (e) {
+    console.log(e.message);
+    res.sendStatus(500);
+    res.end();
+  }
+};
+
+export const getVideoDetails = async (req, res) => {
+  let videoId = req?.params?.id;
+  try {
+    google.youtube("v3").videos.list(
+      {
+        part: "snippet,id,statistics",
+        key: API_KEY,
+        id: videoId,
+      },
+      function (err, response) {
+        if (err) {
+          res.status(500).send({ error: err });
+          return;
+        }
+        var videos = response?.data?.items;
+        if (videos?.length == 0 || videos === undefined) {
+          res.send({ msg: "No Video Found", data: null });
+        } else {
+          res.send({
+            msg: "success",
+            // data: {
+            //   id: videos[0]?.id,
+            //   title: videos[0]?.snippet?.title,
+            //   totalViews: videos[0]?.statistics?.viewCount,
+            // },
+            data: videos,
           });
         }
       }

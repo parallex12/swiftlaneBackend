@@ -1,5 +1,5 @@
 import { githubToken } from "./env";
-import {constants} from "./constants.js"
+import { constants } from "./constants.js";
 
 export const generateOptions = (_path) => {
   return (options = {
