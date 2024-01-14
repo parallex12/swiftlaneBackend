@@ -161,7 +161,6 @@ export const getLatestVideosOfChannel = async (req, res) => {
                   if (video?.length == 0 || video === undefined) {
                     res.send({ msg: "No Video Found", data: null });
                   } else {
-                    console.log(video[0]?.snippet?.publishedAt);
                     arr.push(video[0]);
                     if (videos.length === arr.length) {
                       res.send({ msg: "success", data: arr });
