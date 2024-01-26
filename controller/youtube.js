@@ -2,6 +2,38 @@ import { google } from "googleapis";
 
 const API_KEY = "AIzaSyB7uHq3-va_B4riiRC80EIX6PinnrX49d0";
 
+const searchChannel = async (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      google.youtube("v3").search.list(
+        {
+          part: "id,snippet",
+          key: API_KEY,
+          channelId: id,
+          maxResults: 5,
+          type: "channel",
+        },
+        function (err, response) {
+          if (err) {
+            reject(err?.message);
+          }
+          var channel = response?.data?.items;
+          if (channel?.length == 0 || channel === undefined) {
+            // res.send({ msg: "No Channel Found", data: null });
+            reject({ msg: "null", channel: null });
+          } else {
+            resolve({ msg: "success", data: channel });
+          }
+        }
+      );
+    } catch (e) {
+      console.log(e.message);
+      reject(e?.message);
+      res.end();
+    }
+  });
+};
+
 export const addChannel = async (req, res) => {
   let channelUrl = req?.body?.url;
   var path = channelUrl.split("/");
@@ -13,6 +45,9 @@ export const addChannel = async (req, res) => {
   if (path.indexOf("@") === 0) {
     path = path.slice(1);
   }
+
+  path = path.split("?")[0];
+  console.log(path);
   try {
     google.youtube("v3").channels.list(
       {
@@ -22,14 +57,22 @@ export const addChannel = async (req, res) => {
         forUsername: path,
         key: API_KEY,
       },
-      function (err, response) {
+      async function (err, response) {
         if (err) {
-          res.status(500).send({ error: err });
+          res.status(500).send({ error: err?.message });
           return;
         }
         var channels = response?.data?.items;
+        console.log(channels);
         if (channels?.length == 0 || channels === undefined) {
-          res.send({ msg: "No Channel Found", data: null });
+          // console.log(searchChannel(path));
+          searchChannel(path)
+            .then((result) => {
+              res?.send(result);
+            })
+            .catch((e) => {
+              res.send({ msg: "No Channel Found", data: null });
+            });
         } else {
           res.send({
             msg: "success",
