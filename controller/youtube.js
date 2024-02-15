@@ -7,7 +7,7 @@ const searchChannel = async (id) => {
     try {
       google.youtube("v3").search.list(
         {
-          part: "id,snippet",
+          part: ["snippet,id"],
           key: API_KEY,
           channelId: id,
           maxResults: 5,
@@ -22,7 +22,13 @@ const searchChannel = async (id) => {
             // res.send({ msg: "No Channel Found", data: null });
             reject({ msg: "null", channel: null });
           } else {
-            resolve({ msg: "success", data: channel });
+            let data = {
+              id: channel[0]?.id?.channelId,
+              title: channel[0]?.snippet?.title,
+              totalViews: channel[0]?.id?.channelId,
+              subscribers: channel[0]?.statistics?.subscriberCount || null,
+            };
+            resolve({ msg: "success", data: data });
           }
         }
       );
