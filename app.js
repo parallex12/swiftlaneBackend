@@ -15,7 +15,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(setHeaders);
 app.use(express.static("public"));
-
 //Load all routes
 loadRoutes(v1Routes, (path, route) => app.use("/api" + path, route));
 
